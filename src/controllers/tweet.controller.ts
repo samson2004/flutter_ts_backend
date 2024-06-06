@@ -1,7 +1,7 @@
 // routes->controller -> repository -> mongodb-> repository->controller->route->json
 import { deleteUsersTweetidRepo,  updateUserwithTweetidRepo } from "../repositories/user.repository";
 import { Request,Response } from "express";
-import { getTweetRepo,createTweetRepo,deleteTweetRepo,updateTweetRepo } from "../repositories/tweet.repository";
+import { getTweetRepo,createTweetRepo,deleteTweetRepo,updateTweetRepo, getallTweetRepo } from "../repositories/tweet.repository";
 import { ItweetInterface } from "../database/interfaces/tweet.interface";
 import { IuserInterface } from "../database/interfaces/user.interface";
 
@@ -21,6 +21,22 @@ export const getTweetController = async (req:Request,res:Response)=>{
         res.status(500).json({"Error":err});
     }
 };
+
+export const getallTweetController = async (req:Request,res:Response)=>{
+    try{
+        const tweets=await getallTweetRepo();
+        if(tweets){
+            res.status(200).json({"data":tweets});
+        }else{
+            res.status(500).json({"data":"tweets not found"});
+        }
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({"Error":err});
+    }
+};
+
 
 export const createTweetController= async (req:Request,res:Response)=>{
     const tweet: ItweetInterface=req.body;

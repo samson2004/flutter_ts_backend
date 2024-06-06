@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import tweetModel from "../database/models/tweet.model";
 import { ItweetInterface } from "../database/interfaces/tweet.interface";
+import exp from "constants";
+import userModel from "../database/models/user.model";
 
 
 
@@ -59,5 +61,26 @@ export const updateTweetRepo=async(tweetid:String,updatedtweet:ItweetInterface):
     catch(err){
         console.error(err);
         return false;
+    }
+}
+
+export const getallTweetRepo=async():Promise<any[] | null>=>{
+    try {
+        const allTweets=await tweetModel.find();
+        if(!allTweets || allTweets.length==0){
+            return null;
+        }
+        const   TweetwithUserInfo=await Promise.all(
+            allTweets.map(async(tweet)=>{
+                const admin=await userModel.findOne({uid:tweet.adminid});
+                if(!admin){
+                    return {tweet,admin:null}
+                }
+                return {tweet,admin}
+            }));
+        return TweetwithUserInfo;
+    } catch (err) {
+        console.error(err);
+        return null;
     }
 }
