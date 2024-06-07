@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTweetController = exports.deleteTweetController = exports.createTweetController = exports.getTweetController = void 0;
+exports.updateTweetController = exports.deleteTweetController = exports.createTweetController = exports.getallTweetController = exports.getTweetController = void 0;
 // routes->controller -> repository -> mongodb-> repository->controller->route->json
 const user_repository_1 = require("../repositories/user.repository");
 const tweet_repository_1 = require("../repositories/tweet.repository");
@@ -30,6 +30,22 @@ const getTweetController = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getTweetController = getTweetController;
+const getallTweetController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const tweets = yield (0, tweet_repository_1.getallTweetRepo)();
+        if (tweets) {
+            res.status(200).json({ "data": tweets });
+        }
+        else {
+            res.status(500).json({ "data": "tweets not found" });
+        }
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ "Error": err });
+    }
+});
+exports.getallTweetController = getallTweetController;
 const createTweetController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const tweet = req.body;
     try {

@@ -5,7 +5,7 @@ const tweetrouter=Router();
 //define paths
 
 tweetrouter.get("/:tweetId",getTweetController);
-tweetrouter.get("/",getallTweetController);//to get all tweets
+tweetrouter.get("/get/all",getallTweetController);//to get all tweets
 tweetrouter.post("/",createTweetController);
 tweetrouter.delete("/:tweetId",deleteTweetController);
 tweetrouter.put("/",updateTweetController);
